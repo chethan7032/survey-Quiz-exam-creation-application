@@ -65,3 +65,21 @@ Route::middleware(['auth', 'isUser'])->group(function () {
     Route::get('/form/{form}', [FormViewController::class, 'show'])->name('user.form.view');
     Route::post('/form/{form}/submit', [FormViewController::class, 'submit'])->name('user.form.submit');
 });
+
+
+// All the routes are 
+// home
+// about
+// login
+// register
+// logout
+// admin.dashboard
+// admin.form-builder
+// admin.forms.index
+// admin.forms.preview
+// admin.forms.toggle
+// admin.forms.destroy
+// admin.submissions
+// user.forms
+// user.form.view
+// user.form.submit     
