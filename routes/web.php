@@ -67,6 +67,18 @@ Route::middleware(['auth', 'isUser'])->group(function () {
 });
 
 
+
+Route::middleware(['auth', 'isUser'])->prefix('user')->name('user.')->group(function () {
+    Route::view('/dashboard', 'user.dashboard')->name('dashboard'); // ✅ Add this
+    Route::get('/forms', [FormViewController::class, 'index'])->name('forms');
+});
+
+
+
+
+
+
+
 // All the routes are 
 // home
 // about
@@ -75,7 +87,7 @@ Route::middleware(['auth', 'isUser'])->group(function () {
 // logout
 // admin.dashboard
 // admin.form-builder
-// admin.forms.index
+// admin.forms
 // admin.forms.preview
 // admin.forms.toggle
 // admin.forms.destroy

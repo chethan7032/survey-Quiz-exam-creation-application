@@ -27,20 +27,40 @@ class FormViewController extends Controller
         return view('user.fill-form', compact('form'));
     }
 
+// public function submit(Request $request, Form $form)
+// {
+//     $request->validate([
+//         'form_data' => 'required|array',
+//     ]);
+
+//     Submission::create([
+//         'form_id' => $form->id,
+//         'user_id' => Auth::id(),
+//         'form_data' => $request->form_data,
+//         'submitted_at' => now(),
+//     ]);
+
+//     return response()->json(['status' => 'success']);
+// }
+
+
+
 public function submit(Request $request, Form $form)
 {
-    $request->validate([
-        'form_data' => 'required|array',
-    ]);
+    // 💡 Capture all form fields from Form.io
+    $data = $request->all();
 
     Submission::create([
-        'form_id' => $form->id,
-        'user_id' => Auth::id(),
-        'form_data' => $request->form_data,
+        'form_id'     => $form->id,
+        'user_id'     => Auth::id(),
+        'form_data'   => $data, // Laravel will cast this to JSON
         'submitted_at' => now(),
     ]);
 
     return response()->json(['status' => 'success']);
 }
+
+
+
 
 }

@@ -27,7 +27,10 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
+
+        if (!Auth::attempt($credentials, $remember)) {
             return back()->withErrors([
                 'email' => 'Invalid credentials.',
             ])->onlyInput('email');
@@ -35,15 +38,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // 🎯 Redirect based on role
         $user = Auth::user();
+
+        // 🔐 Role-based redirection
         if ($user->role === 'admin') {
             return redirect()->intended('/admin/dashboard');
         } elseif ($user->role === 'user') {
-            return redirect()->intended('/user/forms');
+          return redirect()->intended('/user/dashboard'); 
+
         }
 
-        return redirect()->intended('/');
+        // 🚫 Unknown role fallback
+        Auth::logout();
+        return redirect('/login')->withErrors([
+            'email' => 'Unauthorized access.',
+        ]);
     }
 
     /**
